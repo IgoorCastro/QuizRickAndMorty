@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛸 Rick and Morty Quiz
 
-## Getting Started
+Um quiz interativo baseado no universo de **Rick and Morty**, onde o jogador deve adivinhar corretamente o nome dos personagens exibidos na tela.  
+O jogo pontua acertos, penaliza erros e permite pular perguntas, tornando a experiência dinâmica e desafiadora.
 
-First, run the development server:
+---
+
+## 🎮 Como funciona o jogo
+
+- Uma imagem de um personagem é exibida
+- O jogador deve selecionar **nome correto do personagem**
+- A pontuação é ajustada conforme as ações do jogador
+
+---
+
+## 🧠 Regras de Pontuação
+
+- ✅ **Resposta correta:** +15 pontos  
+- ❌ **Resposta incorreta:** −15% da pontuação atual  
+- ⏭️ **Pular pergunta:** −10% da pontuação atual  
+- 🏆 **Sem limite máximo de pontos**
+
+---
+
+## 🖼️ Personagens
+
+- Os personagens são carregados dinamicamente
+- As imagens vêm da **API oficial de Rick and Morty**
+- Cada rodada apresenta um personagem diferente
+
+---
+
+## ⚙️ Tecnologias Utilizadas
+
+- **React / Next.js**
+- **TypeScript**
+- **CSS Modules**
+- **Rick and Morty API**
+- **Vercel** (deploy)
+
+---
+
+## 🌐 API Utilizada
+
+Os dados dos personagens são obtidos através da API pública:
+
+🔗 https://rickandmortyapi.com/
+
+---
+
+## 📚 Projeto para estudo
+
+Este projeto possui caráter exclusivamente educacional.
+
+---
 
 ```bash
+# instalar dependências
+npm install
+
+# rodar o projeto
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

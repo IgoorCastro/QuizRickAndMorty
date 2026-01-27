@@ -1,0 +1,70 @@
+/* CSS */
+.button {
+  height: 48px;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  padding: 0 25px;
+  position: relative;
+  align-items: center;
+  background-color: #fee6e3;
+  border: 2px solid #111;
+  border-radius: 8px;
+  color: #111;
+  cursor: pointer;
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #B8DBD9;
+  border-radius: 8px;
+  transform: translate(8px, 8px) scale(1);
+  transition:
+    transform 0.45s ease-out,
+    background-color 0.45s ease-out;
+  z-index: -1;
+}
+
+.button:hover:after {
+  transform: translate(0, 0);
+}
+
+.button:active {
+  background-color: #ffdeda;
+  outline: 0;
+}
+
+.button:hover {
+  outline: 0;
+}
+
+@media (min-width: 768px) {
+  .button {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 768) {
+  .button {
+    height: 40px;
+    padding: 0 20px;
+  }
+
+  .button:after {
+    height: 38px;
+    transform: translate(7px, 7px);
+    transition: transform .2s ease-out;
+    z-index: -1;
+  }
+}
