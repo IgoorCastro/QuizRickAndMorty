@@ -1,9 +1,6 @@
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 
-type DisplayImageProps = {
-    src: string,
-    alt: string
-}
+type DisplayImageProps = ImageProps; // tipagem exclusiva do Image do next/image
 
 export default function DisplayImage({ src, alt }: DisplayImageProps) {
     return(
