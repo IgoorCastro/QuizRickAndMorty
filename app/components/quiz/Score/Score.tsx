@@ -4,15 +4,16 @@ import styles from "./Score.module.css";
 type ScoreProps = {
     score: number,
     error?: boolean,
-    hitErrorToogler: boolean,
-}
+    hitToggle: boolean,
+};
 
 // error: caso for true o usuario errou a questao, verificar sempre que o score é alterado
-export default function Score({ score, error, hitErrorToogler }: ScoreProps) {
+// hit acionado sempre que o estado de hitError muda
+export default function Score({ score, error, hitToggle }: ScoreProps) {
     const [hit, setHit] = useState<boolean | undefined>(error); // hit padrão
     const [hitError, setHitError] = useState<boolean | undefined>(error);
 
-    // evitar que o useEffect rode com um useRef
+    // evitar que o useEffect rode no primeiro render
     const isFirstRender = useRef<boolean>(true);
 
     useEffect(() => {
@@ -20,6 +21,7 @@ export default function Score({ score, error, hitErrorToogler }: ScoreProps) {
             isFirstRender.current = false;
             return;
         }
+        
         error ? setHit(true) : setHitError(true);
 
         const timer = setTimeout(() => { // altera pra false em 2.5s
@@ -28,7 +30,7 @@ export default function Score({ score, error, hitErrorToogler }: ScoreProps) {
         }, 450);
 
         return () => clearTimeout(timer);
-    }, [hitErrorToogler]);
+    }, [hitToggle]);
 
     return (
         <div className={`${styles.scoreContainer} ${hitError ? styles.errorHit : ""} ${hit ? styles.hit : ""}`}>

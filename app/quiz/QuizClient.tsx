@@ -1,6 +1,6 @@
 'use client'
 
-import fetchData, { Character } from "../lib/rickandmort";
+import fetchData, { Character } from "../lib/api/rickandmort";
 import Button from "../components/ui/Button/Button";
 import QuizContainer from "../components/quiz/QuizContainer";
 import Title from "../components/ui/Title";
@@ -10,93 +10,79 @@ import Options from "../components/quiz/Options";
 import Score from "../components/quiz/Score/Score";
 import { addScore, subScore } from "../lib/calculateScore";
 import styles from "./quiz.module.css";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Modal from "../components/ui/Modal";
 import { modalInfo } from "../lib/gameInfo";
+import Helper from "../components/quiz/Score/Helper/Helper";
+import ModalGameInfo from "../components/quiz/ModalGameInfo";
 
 type QuizClientProps = {
-    character: Character[],
-    drawnChar: number,
+    initialCharacter: Character[],
+    initialDrawnId: number,
 }
 
-export default function QuizClient({ character }: QuizClientProps) {
-    const drawId = (maxId: number) =>  Math.floor(Math.random() * maxId);
-    const [char, setChar] = useState<Character[]>(character);
+export default function QuizClient({ initialCharacter, initialDrawnId }: QuizClientProps) {
+    const [char, setChar] = useState<Character[]>(initialCharacter);
     const [score, setScore] = useState<number>(0);
-    const [drawnId, setDrawnId] = useState<number>(() => drawId(3));// sorteia um ID para ser advinhado
-    const [error, setError] = useState<boolean>();
+    const [drawnId, setDrawnId] = useState<number>(initialDrawnId);// inicia com Id sorteado no SS
+    const [error, setError] = useState<boolean>(); // true: resposta errada - false: resposta correta
+    const [hitToggle, setHitToggle] = useState<boolean>(true);
+    // isModalVisible controla a visibilidade da Modal
+    // como é um state, vai gerar sempre o re-render na pagina quando for alterada
     const [isModalVisible, SetIsModalVisible] = useState<boolean>(true);
-    const [hitError, setHitError] = useState<boolean>(true);
+    const drawnChar: Character = char[drawnId];// character sorteado a cada re-render
 
-    const drawnChar: Character = char[drawnId]; // character escolhido para o game
+    // altera o estado hit e 
+    const hit = () => setHitToggle(prevStatus => !prevStatus);
 
     const resetQuestion = async () => { // altera a questão
-        setChar(await fetchData());
-        setDrawnId(drawId(3));
-    }
+        const newCharList = await fetchData();
+        setChar(newCharList);
+        setDrawnId(Math.floor(Math.random() * 3)); // 0 ~ 2
+    };
 
-    const hit = () => setHitError(prevStatus => !prevStatus);
+    const checkAnswer = (name: string) => { // verifica se a resposta escolhida está de acordo
+        if (drawnChar.name === name) { // resposta correta
+            setScore(addScore(score, 15)); // + 15 pontos
+            setError(false);
+        } else {
+            setScore(subScore(score, 0.15)); // 15%
+            setError(true);
+        }
+    };
 
     const handlerAnswer = (name: string) => { // handler de resposta
-        if (drawnChar.name === name) { // resposta correta
-            setScore(addScore(score, 15));
-            resetQuestion();
-            setError(false);
-            hit();
-            return;
-        }
-
-        setError(true);
+        checkAnswer(name);
         hit();
-        setScore(subScore(score, 0.15));
         resetQuestion();
-    }
+    };
 
     const nextQuest = () => {
         resetQuestion();
         setError(true);
-        setScore(subScore(score, 0.10));
+        setScore(subScore(score, 0.10)); // 10%
         hit();
-    }
+    };
 
-    const toggleModal = () => {
+    const toggleModal = () => { // controle da modal
         SetIsModalVisible((prevStatus) => !prevStatus);
     }
 
     return (
         <div className={styles.mainContainer}>
-            {isModalVisible && (
-                <Modal closeModal={toggleModal}>
-                    <div className="flex flex-col justify-center items-center mb-5!">
-                        <Title>
-                            Quiz - Rick and Mort
-                        </Title>
-                        <Subtitle className="underline underline-offset-8">
-                            Informações do jogo
-                        </Subtitle>
-                    </div>
+            <ModalGameInfo isModalVisible={isModalVisible} toggleModal={toggleModal} />
 
-                    <div className="w-full h-full flex flex-col justify-around items-center">
-                        <div className="w-full h-auto flex flex-col justify-center items-start">
-                            {modalInfo.map((item, index) => (
-                                <p key={index}><b>{index + 1} </b> - {item}</p>
-                            ))}
-                        </div>
-
-                        <p ><b>Desenvolvido por: <a href="https://www.linkedin.com/in/igor-kaue-castro/" target="_blank"><u>Igor Castro</u></a></b></p>
-
-                        <div className="w-full flex flex-col justify-center items-center relative z-1">
-                            <Button onClick={toggleModal}>START</Button>
-                        </div>
-                    </div>
-                </Modal>
-            )}
             <QuizContainer>
-                <Score score={score} error={error} hitErrorToogler={hitError} ></Score>
+                <div className="w-[95%] flex justify-center items-center relative"> 
+                    <Score score={score} error={error} hitToggle={hitToggle} ></Score>
+                    <div className="w-8 md:w-14 aspect-square flex justify-center items-center absolute z-1 right-0">
+                        <Helper toggleModal={toggleModal} />
+                    </div>
+                </div>
                 <Title>Quiz - Rick and Morty</Title>
                 <Subtitle>Quem é o personagem?</Subtitle>
 
-                <div className="relative w-[50%] md:w-[35%] aspect-square drop-shadow-xl/50 border-2 border-[#B8DBD9]" >
+                <div className="relative w-[55%] md:w-[35%] aspect-square drop-shadow-xl/50 border-2 border-[#B8DBD9]" >
                     <DisplayImage src={char[drawnId].image} alt="" />
                 </div>
 

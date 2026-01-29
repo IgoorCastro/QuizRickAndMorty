@@ -1,6 +1,4 @@
-type TitleProps = {
-    children: React.ReactNode
-}
+type TitleProps = React.ComponentProps<"h1">;
 
 export default function Title({children}: TitleProps) {
     return (

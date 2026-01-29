@@ -1,3 +1,4 @@
+// manter todo o informativo do jogo aqui
 type modalInfoProps = string[];
 
 export const modalInfo: modalInfoProps = [
