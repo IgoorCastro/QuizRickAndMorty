@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@/app/globals.css";
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from "@vercel/analytics/next";
+import AnalyticsLogger from "../components/AnalyticsLogger";
 
 export const metadata: Metadata = {
   title: "Quiz - Quiz Rick e Morty",
@@ -16,6 +17,7 @@ export default function RootLayout({
     <div>
       {children}
       <Analytics />
+      <AnalyticsLogger />
     </div>
   );
 }
