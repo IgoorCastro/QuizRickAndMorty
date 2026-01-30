@@ -27,7 +27,7 @@ export default function Score({ score, error, hitToggle }: ScoreProps) {
         const timer = setTimeout(() => { // altera pra false em 2.5s
             setHitError(false);
             setHit(false);
-        }, 450);
+        }, 850);
 
         return () => clearTimeout(timer);
     }, [hitToggle]);
