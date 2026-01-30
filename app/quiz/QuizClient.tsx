@@ -10,11 +10,12 @@ import Options from "../components/quiz/Options";
 import Score from "../components/quiz/Score/Score";
 import { addScore, subScore } from "../lib/calculateScore";
 import styles from "./quiz.module.css";
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, use, useCallback, useEffect, useState } from "react";
 import Modal from "../components/ui/Modal";
 import { modalInfo } from "../lib/gameInfo";
 import Helper from "../components/quiz/Score/Helper/Helper";
 import ModalGameInfo from "../components/quiz/ModalGameInfo";
+import Skeleton from "../components/ui/Skeleton";
 
 type QuizClientProps = {
     initialCharacter: Character[],
@@ -29,13 +30,15 @@ export default function QuizClient({ initialCharacter, initialDrawnId }: QuizCli
     const [hitToggle, setHitToggle] = useState<boolean>(true);
     // isModalVisible controla a visibilidade da Modal
     // como é um state, vai gerar sempre o re-render na pagina quando for alterada
-    const [isModalVisible, SetIsModalVisible] = useState<boolean>(true);
+    const [isModalVisible, setIsModalVisible] = useState<boolean>(true);
+    const [isImageLoading, setIsImageLoading] = useState<boolean>(true);
     const drawnChar: Character = char[drawnId];// character sorteado a cada re-render
 
     // altera o estado hit e 
     const hit = () => setHitToggle(prevStatus => !prevStatus);
 
     const resetQuestion = async () => { // altera a questão
+        setIsImageLoading(true);
         const newCharList = await fetchData();
         setChar(newCharList);
         setDrawnId(Math.floor(Math.random() * 3)); // 0 ~ 2
@@ -65,7 +68,7 @@ export default function QuizClient({ initialCharacter, initialDrawnId }: QuizCli
     };
 
     const toggleModal = () => { // controle da modal
-        SetIsModalVisible((prevStatus) => !prevStatus);
+        setIsModalVisible((prevStatus) => !prevStatus);
     }
 
     return (
@@ -73,7 +76,7 @@ export default function QuizClient({ initialCharacter, initialDrawnId }: QuizCli
             <ModalGameInfo isModalVisible={isModalVisible} toggleModal={toggleModal} />
 
             <QuizContainer>
-                <div className="w-[95%] flex justify-center items-center relative"> 
+                <div className="w-[95%] flex justify-center items-center relative">
                     <Score score={score} error={error} hitToggle={hitToggle} ></Score>
                     <div className="w-8 md:w-14 aspect-square flex justify-center items-center absolute z-1 right-0">
                         <Helper toggleModal={toggleModal} />
@@ -82,8 +85,18 @@ export default function QuizClient({ initialCharacter, initialDrawnId }: QuizCli
                 <Title>Quiz - Rick and Morty</Title>
                 <Subtitle>Quem é o personagem?</Subtitle>
 
-                <div className="relative w-[55%] md:w-[35%] aspect-square drop-shadow-xl/50 border-2 border-[#B8DBD9]" >
-                    <DisplayImage src={char[drawnId].image} alt="" />
+                <div className="relative w-[55%] md:w-[35%] aspect-square flex justify-center items-center drop-shadow-xl/50 border-2 border-[#B8DBD9]" >
+                    {isImageLoading && <Skeleton className="w-[30%] aspect-square" />}
+                    
+                    <DisplayImage
+                        src={char[drawnId].image}
+                        alt="Quiz - Rick and Morty"
+                        onLoad={() => setIsImageLoading(false)}
+                        className={`
+                            transition-opacity duration-300
+                            ${isImageLoading ? `opacity-0` : `opacity-100`}  
+                        `}
+                    />
                 </div>
 
                 <Options characters={char} handler={handlerAnswer} />
