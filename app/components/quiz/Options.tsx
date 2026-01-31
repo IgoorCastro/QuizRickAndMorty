@@ -11,6 +11,7 @@ type OptionsProps = {
 // callback retorna o nome do character selecionado (para compração)
 // quando montada, handler recebe uma função com o parametro do nome
 // do personagem, facilitando a comparação
+// verificar o loading
 export default function Options({ characters, onClick, isLoading }: OptionsProps) {
     return (
         <div className="w-full h-auto flex flex-col md:flex-row justify-center items-center gap-3">
@@ -21,7 +22,7 @@ export default function Options({ characters, onClick, isLoading }: OptionsProps
                     ))
                 :
                     characters.map((char: Character) => (
-                    <Button key={char.id}></Button>
+                    <Button key={char.id} className="cursor-default! transition-opacity opacity-0 " onClick={() => null}></Button>
                 ))
             }
         </div>
