@@ -21,7 +21,7 @@ export default function Options({ characters, onClick, isLoading }: OptionsProps
                     ))
                 :
                     characters.map((char: Character) => (
-                    <Button key={char.id}></Button>
+                    <Button key={char.id} className="cursor-default! transition-opacity opacity-0 " onClick={() => null}></Button>
                 ))
             }
         </div>

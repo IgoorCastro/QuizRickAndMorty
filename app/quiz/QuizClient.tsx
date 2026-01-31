@@ -13,7 +13,7 @@ import styles from "./quiz.module.css";
 import { Suspense, use, useCallback, useEffect, useState } from "react";
 import Modal from "../components/ui/Modal";
 import { modalInfo } from "../lib/gameInfo";
-import Helper from "../components/quiz/Score/Helper/Helper";
+import Helper from "../components/quiz/Help/Helper";
 import ModalGameInfo from "../components/quiz/ModalGameInfo";
 import Skeleton from "../components/ui/Skeleton";
 
@@ -85,7 +85,7 @@ export default function QuizClient({ initialCharacter, initialDrawnId }: QuizCli
                 <div className="w-[95%] flex justify-center items-center">
                     <Score score={score} error={error} hitToggle={hitToggle} ></Score>
                 </div>
-                <div className="w-full h-auto flex flex-col items-center">
+                <div className="w-full h-auto flex flex-col items-center gap-1">
                     <Subtitle>Quem é o personagem?</Subtitle>
                     <div className="relative w-[55%] md:w-[35%] aspect-square flex justify-center items-center drop-shadow-xl/50 border-2 border-[#B8DBD9]" >
                         {isImageLoading && <Skeleton className="w-[30%] aspect-square" />}
