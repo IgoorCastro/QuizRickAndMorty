@@ -76,30 +76,32 @@ export default function QuizClient({ initialCharacter, initialDrawnId }: QuizCli
             <ModalGameInfo isModalVisible={isModalVisible} toggleModal={toggleModal} />
 
             <QuizContainer>
-                <div className="w-[95%] flex justify-center items-center relative">
-                    <Score score={score} error={error} hitToggle={hitToggle} ></Score>
-                    <div className="w-8 md:w-14 aspect-square flex justify-center items-center absolute z-1 right-0">
+                <div className="relative w-[93%] flex items-center justify-center">
+                    <Title>Quiz - Rick and Morty</Title>
+                    <div className="w-8 md:w-14 lg:w-11 aspect-square flex justify-center items-center absolute z-1 right-0">
                         <Helper toggleModal={toggleModal} />
                     </div>
                 </div>
-                <Title>Quiz - Rick and Morty</Title>
-                <Subtitle>Quem é o personagem?</Subtitle>
-
-                <div className="relative w-[55%] md:w-[35%] aspect-square flex justify-center items-center drop-shadow-xl/50 border-2 border-[#B8DBD9]" >
-                    {isImageLoading && <Skeleton className="w-[30%] aspect-square" />}
-                    
-                    <DisplayImage
-                        src={char[drawnId].image}
-                        alt="Quiz - Rick and Morty"
-                        onLoad={() => setIsImageLoading(false)}
-                        className={`
+                <div className="w-[95%] flex justify-center items-center">
+                    <Score score={score} error={error} hitToggle={hitToggle} ></Score>
+                </div>
+                <div className="w-full h-auto flex flex-col items-center">
+                    <Subtitle>Quem é o personagem?</Subtitle>
+                    <div className="relative w-[55%] md:w-[35%] aspect-square flex justify-center items-center drop-shadow-xl/50 border-2 border-[#B8DBD9]" >
+                        {isImageLoading && <Skeleton className="w-[30%] aspect-square" />}
+                        <DisplayImage
+                            src={char[drawnId].image}
+                            alt="Quiz - Rick and Morty"
+                            onLoad={() => setIsImageLoading(false)}
+                            className={`
                             transition-opacity duration-300
                             ${isImageLoading ? `opacity-0` : `opacity-100`}  
                         `}
-                    />
+                        />
+                    </div>
                 </div>
 
-                <Options characters={char} handler={handlerAnswer} />
+                <Options characters={char} onClick={handlerAnswer} isLoading={isImageLoading} />
 
                 <div className="flex">
                     <Button onClick={nextQuest}>Proximo</Button>

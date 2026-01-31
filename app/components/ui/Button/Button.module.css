@@ -51,7 +51,8 @@
 
 @media (min-width: 768px) {
   .button {
-    padding: 0 40px;
+    padding: 0 35px;
+    min-width: 20%;
   }
 }
 
@@ -59,6 +60,7 @@
   .button {
     height: 40px;
     padding: 0 20px;
+    min-width: 60%;
   }
 
   .button:after {

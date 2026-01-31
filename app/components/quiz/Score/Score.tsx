@@ -34,8 +34,8 @@ export default function Score({ score, error, hitToggle }: ScoreProps) {
 
     return (
         <div className={`${styles.scoreContainer} ${hitError ? styles.errorHit : ""} ${hit ? styles.hit : ""}`}>
-            <h4 className="w-min">Score</h4>
-            <h5 className="w-min">{ score }</h5>
+            <span className="w-min text-[1em] md:text-[1.35em] font-medium">Score</span>
+            <span className="w-min text-[1em] md:text-[1.35em] font-semibold">{ score }</span>
         </div>
     );
 }
